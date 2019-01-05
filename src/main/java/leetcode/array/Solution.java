@@ -1,8 +1,6 @@
 package leetcode.array;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 class Solution {
 
@@ -386,35 +384,156 @@ class Solution {
         return true;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new Solution().missingNumber(new int[]{1,0}));
-//        System.out.println(new Solution().maxProfitII(new int[]{1,2,3,4,5}));
-//        int[] param = new int[]{9};
-//        print(new Solution().plusOne(param));
-
-//        int[][] A = new int[][]{{5,4}, {7, 10}};
-//        print(new Solution().transpose(A));
-
-//        System.out.println(new Solution().generate(5));
-//        int[][] ints = new Solution().matrixReshape(new int[][]{{1, 2}, {3, 4}}, 4, 1);
-//        System.out.println(ints);
+    /**
+     * 217. 存在重复元素
+     * 给定一个整数数组，判断是否存在重复元素。
+     *
+     * 如果任何值在数组中出现至少两次，函数返回 true。如果数组中每个元素都不相同，则返回 false。
+     *
+     * 示例 1:
+     *
+     * 输入: [1,2,3,1]
+     * 输出: true
+     * 示例 2:
+     *
+     * 输入: [1,2,3,4]
+     * 输出: false
+     * 示例 3:
+     *
+     * 输入: [1,1,1,3,3,4,3,2,4,2]
+     * 输出: true
+     * @param nums
+     * @return
+     */
+    public boolean containsDuplicate(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (map.containsKey(num))
+                return true;
+            else
+                map.put(num, 1);
+        }
+        return false;
     }
 
-    public static void print(int[][] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print("[");
-            for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j] + ",");
+    /**
+     * 448. 找到所有数组中消失的数字
+     * 给定一个范围在  1 ≤ a[i] ≤ n ( n = 数组大小 ) 的 整型数组，数组中的元素一些出现了两次，另一些只出现一次。
+     *
+     * 找到所有在 [1, n] 范围之间没有出现在数组中的数字。
+     *
+     * 您能在不使用额外空间且时间复杂度为O(n)的情况下完成这个任务吗? 你可以假定返回的数组不算在额外空间内。
+     *
+     * 示例:
+     *
+     * 输入:
+     * [4,3,2,7,8,2,3,1]
+     *
+     * 输出:
+     * [5,6]
+     * @param nums
+     * @return
+     */
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        if (nums == null || nums.length == 0)
+            return list;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 1; i++) {
+            int gap = nums[i + 1] - nums[i];
+            if (gap > 1) {
+                for (int j = 0; j < gap - 1; j++) {
+                    list.add(nums[i] + 1 + j);
+                }
             }
-            System.out.println("]");
         }
+
+        int gap = nums.length - nums[nums.length - 1];
+        if (gap > 0) {
+            for (int j = 0; j < gap; j++) {
+                list.add(nums[nums.length - 1] + 1 + j);
+            }
+        }
+        gap = nums[0];
+        if (gap > 0) {
+            for (int i = 0; i < gap - 1; i++) {
+                list.add(i + 1);
+            }
+        }
+        return list;
     }
 
-    public static void print(int[] arr) {
-        System.out.print("[");
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + ",");
+    /**
+     * 697. 数组的度
+     * 给定一个非空且只包含非负数的整数数组 nums, 数组的度的定义是指数组里任一元素出现频数的最大值。
+     *
+     * 你的任务是找到与 nums 拥有相同大小的度的最短连续子数组，返回其长度。
+     *
+     * 示例 1:
+     *
+     * 输入: [1, 2, 2, 3, 1]
+     * 输出: 2
+     * 解释:
+     * 输入数组的度是2，因为元素1和2的出现频数最大，均为2.
+     * 连续子数组里面拥有相同度的有如下所示:
+     * [1, 2, 2, 3, 1], [1, 2, 2, 3], [2, 2, 3, 1], [1, 2, 2], [2, 2, 3], [2, 2]
+     * 最短连续子数组[2, 2]的长度为2，所以返回2.
+     * 示例 2:
+     *
+     * 输入: [1,2,2,3,1,4,2]
+     * 输出: 6
+     * 注意:
+     *
+     * nums.length 在1到50,000区间范围内。
+     * nums[i] 是一个在0到49,999范围内的整数。
+     * @param nums
+     * @return
+     */
+    public int findShortestSubArray(int[] nums) {
+        if (nums.length == 1)
+            return 1;
+        Map<Integer, Integer> numToTimes = new HashMap<>();
+        Map<Integer, List<Integer>> timesToNum = new HashMap<>();
+        int maxTimes = Integer.MIN_VALUE;
+        for (int num : nums) {
+            int times = numToTimes.getOrDefault(num, 0) + 1;
+            numToTimes.put(num, times);
+            List<Integer> list = timesToNum.getOrDefault(times, new ArrayList<>());
+            list.add(num);
+            timesToNum.put(times, list);
+            maxTimes = Math.max(maxTimes, times);
         }
-        System.out.println("]");
+        if (maxTimes == 1)
+            return 1;
+
+        /**
+         * 0: close 1: open
+         */
+        boolean open = false;
+        int result = Integer.MAX_VALUE;
+        for (Integer num0 : timesToNum.get(maxTimes)) {
+            int idxBegin = Integer.MAX_VALUE;
+            int du = 0;
+            for (int i = 0; i < nums.length; i++) {
+                if (open) {
+                    if (nums[i] == num0)
+                        du++;
+                    if (du >= maxTimes) {
+                        open = false;
+                        if (i - idxBegin < result)
+                            result = i - idxBegin + 1;
+                    }
+                } else {
+                    if (nums[i] == num0) {
+                        du++;
+                        open = true;
+                        idxBegin = i;
+                    }
+                }
+            }
+            open = false;
+        }
+        return result;
     }
+
 }
