@@ -536,4 +536,158 @@ class Solution {
         return result;
     }
 
+    /**
+     * 爱丽丝和鲍勃有不同大小的糖果棒：A[i] 是爱丽丝拥有的第 i 块糖的大小，B[j] 是鲍勃拥有的第 j 块糖的大小。
+     *
+     * 因为他们是朋友，所以他们想交换一个糖果棒，这样交换后，他们都有相同的糖果总量。（一个人拥有的糖果总量是他们拥有的糖果棒大小的总和。）
+     *
+     * 返回一个整数数组 ans，其中 ans[0] 是爱丽丝必须交换的糖果棒的大小，ans[1] 是 Bob 必须交换的糖果棒的大小。
+     *
+     * 如果有多个答案，你可以返回其中任何一个。保证答案存在。
+     *
+     *
+     *
+     * 示例 1：
+     *
+     * 输入：A = [1,1], B = [2,2]
+     * 输出：[1,2]
+     * 示例 2：
+     *
+     * 输入：A = [1,2], B = [2,3]
+     * 输出：[1,2]
+     * 示例 3：
+     *
+     * 输入：A = [2], B = [1,3]
+     * 输出：[2,3]
+     * 示例 4：
+     *
+     * 输入：A = [1,2,5], B = [2,4]
+     * 输出：[5,4]
+     *
+     *
+     * 提示：
+     *
+     * 1 <= A.length <= 10000
+     * 1 <= B.length <= 10000
+     * 1 <= A[i] <= 100000
+     * 1 <= B[i] <= 100000
+     * 保证爱丽丝与鲍勃的糖果总量不同。
+     * 答案肯定存在。
+     * @param A
+     * @param B
+     * @return
+     */
+    public int[] fairCandySwap(int[] A, int[] B) {
+        int[] ints = new int[2];
+        if (A == null || A.length == 0 || B == null || B.length == 0)
+            return ints;
+        int sa = 0, sb = 0;
+        for (int i : A) {
+            sa += i;
+        }
+        Set<Integer> bSet = new HashSet<>();
+        for (int i : B) {
+            sb += i;
+            bSet.add(i);
+        }
+        // delta = x - y
+        int delta = (sa - sb) / 2;
+        for (int x : A) {
+            int y = x - delta;
+            if (bSet.contains(y)) {
+                ints[0] = x;
+                ints[1] = y;
+                return ints;
+            }
+        }
+        return ints;
+    }
+
+    /**
+     * 628. 三个数的最大乘积
+     * 给定一个整型数组，在数组中找出由三个数组成的最大乘积，并输出这个乘积。
+     *
+     * 示例 1:
+     *
+     * 输入: [1,2,3]
+     * 输出: 6
+     * 示例 2:
+     *
+     * 输入: [1,2,3,4]
+     * 输出: 24
+     * 注意:
+     *
+     * 给定的整型数组长度范围是[3,104]，数组中所有的元素范围是[-1000, 1000]。
+     * 输入的数组中任意三个数的乘积不会超出32位有符号整数的范围。
+     * @param nums
+     * @return
+     */
+    public int maximumProduct(int[] nums) {
+        Arrays.sort(nums);
+        int result = 1;
+        for (int i = nums.length - 1; i >= nums.length - 3; i--) {
+            result = result * nums[i];
+        }
+        int r1 = nums[0] * nums[1] * nums[nums.length - 1];
+        if (r1 > result)
+            return r1;
+        return result;
+    }
+
+    /**
+     * 在一个由小写字母构成的字符串 S 中，包含由一些连续的相同字符所构成的分组。
+     *
+     * 例如，在字符串 S = "abbxxxxzyy" 中，就含有 "a", "bb", "xxxx", "z" 和 "yy" 这样的一些分组。
+     *
+     * 我们称所有包含大于或等于三个连续字符的分组为较大分组。找到每一个较大分组的起始和终止位置。
+     *
+     * 最终结果按照字典顺序输出。
+     *
+     * 示例 1:
+     *
+     * 输入: "abbxxxxzzy"
+     * 输出: [[3,6]]
+     * 解释: "xxxx" 是一个起始于 3 且终止于 6 的较大分组。
+     * 示例 2:
+     *
+     * 输入: "abc"
+     * 输出: []
+     * 解释: "a","b" 和 "c" 均不是符合要求的较大分组。
+     * 示例 3:
+     *
+     * 输入: "abcdddeeeeaabbbcd"
+     * 输出: [[3,5],[6,9],[12,14]]
+     * 说明:  1 <= S.length <= 1000
+     * @param S
+     * @return
+     */
+    public List<List<Integer>> largeGroupPositions(String S) {
+        char[] chars = S.toCharArray();
+        List<List<Integer>> list = new ArrayList<>();
+        char lastC = Character.MAX_VALUE;
+        int state = 0;//0 close 1 open
+        int begin = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (state == 0) {
+                if (chars[i] == lastC) {
+                    state = 1;
+                    begin = i - 1;
+                }
+            } else {
+                if (chars[i] != lastC ) {
+                    if ((i - begin) >= 3) {
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(begin);
+                        temp.add(i - 1);
+                        list.add(temp);
+                    }
+                    begin = 0;
+                    state = 0;
+                }
+            }
+            lastC = chars[i];
+        }
+        return list;
+    }
+
 }
