@@ -26,4 +26,9 @@ public class TestSolution {
     public void largeGroupPositions() {
         System.out.println(JSON.toJSONString(solution.largeGroupPositions("abcdddeeeeaabbbcd")));
     }
+
+    @Test
+    public void twoSum() {
+        System.out.println(JSON.toJSONString(solution.twoSum(new int[]{2,3,4}, 6)));
+    }
 }

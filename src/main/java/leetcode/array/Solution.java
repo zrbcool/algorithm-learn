@@ -690,4 +690,179 @@ class Solution {
         return list;
     }
 
+    /**
+     * 有两种特殊字符。第一种字符可以用一比特0来表示。第二种字符可以用两比特(10 或 11)来表示。
+     *
+     * 现给一个由若干比特组成的字符串。问最后一个字符是否必定为一个一比特字符。给定的字符串总是由0结束。
+     *
+     * 示例 1:
+     *
+     * 输入:
+     * bits = [1, 0, 0]
+     * 输出: True
+     * 解释:
+     * 唯一的编码方式是一个两比特字符和一个一比特字符。所以最后一个字符是一比特字符。
+     * 示例 2:
+     *
+     * 输入:
+     * bits = [1, 1, 1, 0]
+     * 输出: False
+     * 解释:
+     * 唯一的编码方式是两比特字符和两比特字符。所以最后一个字符不是一比特字符。
+     * 注意:
+     *
+     * 1 <= len(bits) <= 1000.
+     * bits[i] 总是0 或 1.
+     * @param bits
+     * @return
+     */
+    public boolean isOneBitCharacter(int[] bits) {
+        if (bits.length < 3) {
+            return bits.length == 1 || bits[0] == 0;
+        } else if (bits.length % 2 == 1) {
+            if (bits[bits.length - 3] == 1) {
+                if (bits.length == 3) return true;
+                else if (bits[bits.length - 4] == 0) return true;
+                else if (bits[bits.length - 5] == 1) return true;
+                else return bits[bits.length - 2] == 0;
+            }
+            else {
+                return bits[bits.length - 2] != 1;
+            }
+        } else {
+            return (bits[bits.length - 4] == 0 && bits[bits.length - 3] == 1) || (bits[bits.length - 4] == 0 && bits[bits.length - 2] == 0) || (bits[bits.length - 4] == 1 && bits[bits.length - 2] == 0);
+        }
+    }
+
+    /**
+     * 747. 至少是其他数字两倍的最大数
+     * 在一个给定的数组nums中，总是存在一个最大元素 。
+     *
+     * 查找数组中的最大元素是否至少是数组中每个其他数字的两倍。
+     *
+     * 如果是，则返回最大元素的索引，否则返回-1。
+     *
+     * 示例 1:
+     *
+     * 输入: nums = [3, 6, 1, 0]
+     * 输出: 1
+     * 解释: 6是最大的整数, 对于数组中的其他整数,
+     * 6大于数组中其他元素的两倍。6的索引是1, 所以我们返回1.
+     *
+     *
+     * 示例 2:
+     *
+     * 输入: nums = [1, 2, 3, 4]
+     * 输出: -1
+     * 解释: 4没有超过3的两倍大, 所以我们返回 -1.
+     *
+     *
+     * 提示:
+     *
+     * nums 的长度范围在[1, 50].
+     * 每个 nums[i] 的整数范围在 [0, 99].
+     * @param nums
+     * @return
+     */
+    public int dominantIndex(int[] nums) {
+        if (nums.length == 1) return 0;
+        Map<Integer, Integer> valueToIndex = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            valueToIndex.put(nums[i], i);
+        }
+        Arrays.sort(nums);
+        if (nums[nums.length - 1] >= nums[nums.length - 2] * 2) {
+            return valueToIndex.get(nums[nums.length - 1]);
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * 674. 最长连续递增序列
+     * 给定一个未经排序的整数数组，找到最长且连续的的递增序列。
+     *
+     * 示例 1:
+     *
+     * 输入: [1,3,5,4,7]
+     * 输出: 3
+     * 解释: 最长连续递增序列是 [1,3,5], 长度为3。
+     * 尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为5和7在原数组里被4隔开。
+     * 示例 2:
+     *
+     * 输入: [2,2,2,2,2]
+     * 输出: 1
+     * 解释: 最长连续递增序列是 [2], 长度为1。
+     * 注意：数组长度不会超过10000。
+     * @param nums
+     * @return
+     */
+    public int findLengthOfLCIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int state = 0, result = 1; //0: close 1: open
+        int temp = 0, numLast = Integer.MAX_VALUE;
+        for (int num : nums) {
+            if (state == 0) {
+                if (num > numLast) {
+                    temp = 2;
+                    state = 1;
+                } else {
+                    temp = 0;
+                }
+            } else {
+                if (num > numLast) {
+                    temp++;
+                } else {
+                    state = 0;
+                    result = Math.max(result, temp);
+                }
+            }
+            numLast = num;
+        }
+        if (state == 1) {
+            result = Math.max(result, temp);
+        }
+        return result;
+    }
+
+    /**
+     * 167. 两数之和 II - 输入有序数组
+     * 给定一个已按照升序排列 的有序数组，找到两个数使得它们相加之和等于目标数。
+     *
+     * 函数应该返回这两个下标值 index1 和 index2，其中 index1 必须小于 index2。
+     *
+     * 说明:
+     *
+     * 返回的下标值（index1 和 index2）不是从零开始的。
+     * 你可以假设每个输入只对应唯一的答案，而且你不可以重复使用相同的元素。
+     * 示例:
+     *
+     * 输入: numbers = [2, 7, 11, 15], target = 9
+     * 输出: [1,2]
+     * 解释: 2 与 7 之和等于目标数 9 。因此 index1 = 1, index2 = 2 。
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public int[] twoSum(int[] numbers, int target) {
+//        for (int i = 0; i < numbers.length; i++) {
+//            for (int j = i + 1; j < numbers.length; j++) {
+//                if (numbers[i] + numbers[j] == target)
+//                    return new int[]{i + 1, j + 1};
+//            }
+//        }
+        int l = 0, r = numbers.length - 1;
+        while (l < r) {
+            int temp = numbers[l] + numbers[r];
+            if (temp == target)
+                return new int[]{l + 1, r + 1};
+            else if (temp > target)
+                r--;
+            else
+                l++;
+        }
+        throw new IllegalArgumentException();
+    }
 }
