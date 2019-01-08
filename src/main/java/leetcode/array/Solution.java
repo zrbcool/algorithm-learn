@@ -4,6 +4,402 @@ import java.util.*;
 
 class Solution {
 
+    /**
+     * 905. 按奇偶排序数组
+     * 给定一个非负整数数组 A，返回一个由 A 的所有偶数元素组成的数组，后面跟 A 的所有奇数元素。
+     *
+     * 你可以返回满足此条件的任何数组作为答案。
+     *
+     *
+     *
+     * 示例：
+     *
+     * 输入：[3,1,2,4]
+     * 输出：[2,4,3,1]
+     * 输出 [4,2,3,1]，[2,4,1,3] 和 [4,2,1,3] 也会被接受。
+     *
+     *
+     * 提示：
+     *
+     * 1 <= A.length <= 5000
+     * 0 <= A[i] <= 5000
+     * @param A
+     * @return
+     */
+    public int[] sortArrayByParity(int[] A) {
+        if (A == null || A.length == 0)
+            return A;
+
+        int i = 0;
+        int j = A.length - 1;
+        while (i < j) {
+            if (A[i] % 2 == 0) {
+                i++;
+            } else {
+                if (A[j] % 2 == 0) {
+                    int temp = A[i];
+                    A[i] = A[j];
+                    A[j] = temp;
+                    j--;
+                } else {
+                    j--;
+                }
+            }
+        }
+        return A;
+    }
+
+    /**
+     * 给定一个二进制矩阵 A，我们想先水平翻转图像，然后反转图像并返回结果。
+     *
+     * 水平翻转图片就是将图片的每一行都进行翻转，即逆序。例如，水平翻转 [1, 1, 0] 的结果是 [0, 1, 1]。
+     *
+     * 反转图片的意思是图片中的 0 全部被 1 替换， 1 全部被 0 替换。例如，反转 [0, 1, 1] 的结果是 [1, 0, 0]。
+     *
+     * 示例 1:
+     *
+     * 输入: [[1,1,0],[1,0,1],[0,0,0]]
+     * 输出: [[1,0,0],[0,1,0],[1,1,1]]
+     * 解释: 首先翻转每一行: [[0,1,1],[1,0,1],[0,0,0]]；
+     *      然后反转图片: [[1,0,0],[0,1,0],[1,1,1]]
+     * 示例 2:
+     *
+     * 输入: [[1,1,0,0],[1,0,0,1],[0,1,1,1],[1,0,1,0]]
+     * 输出: [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]
+     * 解释: 首先翻转每一行: [[0,0,1,1],[1,0,0,1],[1,1,1,0],[0,1,0,1]]；
+     *      然后反转图片: [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]
+     * 说明:
+     *
+     * 1 <= A.length = A[0].length <= 20
+     * 0 <= A[i][j] <= 1
+     * @param A
+     * @return
+     */
+    public int[][] flipAndInvertImage(int[][] A) {
+        if (A == null || A.length == 0)
+            return A;
+        int[][] result = new int[A.length][A.length];
+        for (int i = 0; i < A.length; i++) {
+            for (int i1 = 0; i1 < A[i].length; i1++) {
+                if (A[i][i1] == 0) {
+                    result[i][A.length - i1 - 1] = 1;
+                } else {
+                    result[i][A.length - i1 - 1] = 0;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 给定一个非负整数数组 A， A 中一半整数是奇数，一半整数是偶数。
+     *
+     * 对数组进行排序，以便当 A[i] 为奇数时，i 也是奇数；当 A[i] 为偶数时， i 也是偶数。
+     *
+     * 你可以返回任何满足上述条件的数组作为答案。
+     *
+     *
+     *
+     * 示例：
+     *
+     * 输入：[4,2,5,7]
+     * 输出：[4,5,2,7]
+     * 解释：[4,7,2,5]，[2,5,4,7]，[2,7,4,5] 也会被接受。
+     *
+     *
+     * 提示：
+     *
+     * 2 <= A.length <= 20000
+     * A.length % 2 == 0
+     * 0 <= A[i] <= 1000
+     * @param A
+     * @return
+     */
+//    public int[] sortArrayByParityII(int[] A) {
+//        if (A == null || A.length == 0)
+//            return A;
+//        int i = 0;
+//        int j = A.length - 1;
+//        while (i < j) {
+//            if (i % 2 == 1) {
+//                if (A[i] % 2 == 1) {
+//                    i++;
+//                } else {
+//                    if (A[j] % 2 == 1 && j % 2 != 1) {
+//                        int temp = A[i];
+//                        A[i] = A[j];
+//                        A[j] = temp;
+//                        j--;
+//                    } else {
+//                        j--;
+//                    }
+//                }
+//            } else {
+//                if (j % 2 == 1) {
+//                    if (A[j] % 2 == 1) {
+//                        j--;
+//                    } else if (A[i] % 2 == 1) {
+//                        int temp = A[i];
+//                        A[i] = A[j];
+//                        A[j] = temp;
+//                        i++;
+//                        j--;
+//                    } else {
+//                        i++;
+//                    }
+//                } else {
+//                    if (A[j] % 2 == 1) {
+//                        i++;
+//                    } else {
+//                        if (A[i] % 2 == 1) {
+//                            j--;
+//                        } else {
+//                            i++;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return A;
+//    }
+    boolean ji(int var) {
+        return var % 2 == 1;
+    }
+
+    public int[] sortArrayByParityII(int[] A) {
+        if (A == null || A.length == 0)
+            return A;
+        int i = 0;
+        int j = A.length - 1;
+        while (i < j) {
+            if (ji(A[i])) {
+                if (ji(i)) {
+                    i++;
+                    continue;
+                }
+            }
+            if (ji(A[j])) {
+                if (ji(j)) {
+                    j--;
+                    continue;
+                }
+            }
+            if (ji(A[i]) && !ji(i) && !ji(A[j]) && ji(j)) {
+                int temp = A[i];
+                A[i] = A[j];
+                A[j] = temp;
+                i++;
+            }
+            else if (ji(A[j]) && !ji(j) && !ji(A[i]) && ji(i)) {
+                int temp = A[i];
+                A[i] = A[j];
+                A[j] = temp;
+                j--;
+            }
+            else {
+                if (ji(A[i]) && !(ji(A[j]) && ji(j)))
+                    j--;
+                else if (ji(A[j]) && !(ji(A[i]) && ji(i))) {
+                    i++;
+                } else {
+                    i++;
+                }
+            }
+        }
+        return A;
+    }
+
+    /**
+     * 如果一个矩阵的每一方向由左上到右下的对角线上具有相同元素，那么这个矩阵是托普利茨矩阵。
+     *
+     * 给定一个 M x N 的矩阵，当且仅当它是托普利茨矩阵时返回 True。
+     *
+     * 示例 1:
+     *
+     * 输入:
+     * matrix = [
+     *   [1,2,3,4],
+     *   [5,1,2,3],
+     *   [9,5,1,2]
+     * ]
+     * 输出: True
+     * 解释:
+     * 在上述矩阵中, 其对角线为:
+     * "[9]", "[5, 5]", "[1, 1, 1]", "[2, 2, 2]", "[3, 3]", "[4]"。
+     * 各条对角线上的所有元素均相同, 因此答案是True。
+     * 示例 2:
+     *
+     * 输入:
+     * matrix = [
+     *   [1,2],
+     *   [2,2]
+     * ]
+     * 输出: False
+     * 解释:
+     * 对角线"[1, 2]"上的元素不同。
+     * 说明:
+     *
+     *  matrix 是一个包含整数的二维数组。
+     * matrix 的行数和列数均在 [1, 20]范围内。
+     * matrix[i][j] 包含的整数在 [0, 99]范围内。
+     * 进阶:
+     *
+     * 如果矩阵存储在磁盘上，并且磁盘内存是有限的，因此一次最多只能将一行矩阵加载到内存中，该怎么办？
+     * 如果矩阵太大以至于只能一次将部分行加载到内存中，该怎么办？
+     * @param matrix
+     * @return
+     */
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        if (matrix == null)
+            return false;
+        boolean result = true;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (i + j >= matrix.length)
+                    continue;
+                if (matrix[i][0] != matrix[i + j][j]) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+        if (!result)
+            return result;
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                if (i + j >= matrix[0].length)
+                    continue;
+                if (matrix[0][i] != matrix[j][i + j]) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+     *
+     * 你可以假设数组是非空的，并且给定的数组总是存在众数。
+     *
+     * 示例 1:
+     *
+     * 输入: [3,2,3]
+     * 输出: 3
+     * 示例 2:
+     *
+     * 输入: [2,2,1,1,1,2,2]
+     * 输出: 2
+     * @param nums
+     * @return
+     */
+    public int majorityElement(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > (nums.length / 2))
+                return entry.getKey();
+        }
+        return 0;
+    }
+
+    /**
+     * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+     *
+     * 示例:
+     *
+     * 输入: [0,1,0,3,12]
+     * 输出: [1,3,12,0,0]
+     * 说明:
+     *
+     * 必须在原数组上操作，不能拷贝额外的数组。
+     * 尽量减少操作次数。
+     * @param nums
+     */
+    public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length < 2)
+            return;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0)
+                list.add(i);
+        }
+
+        if (list.size() < 1)
+            return;
+
+        for (int i = 0; i < list.size(); i++) {
+            Integer index = list.get(i);
+            Integer nextIndex;
+            if (i + 1 > list.size() - 1) {
+                nextIndex = nums.length;
+            } else {
+                nextIndex = list.get(i + 1);
+            }
+            int gap = nextIndex - index - 1;
+            for (int j = 0; j < gap; j++) {
+                nums[index + j - i] = nums[index + j + 1];
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            nums[nums.length - 1 - i] = 0;
+        }
+    }
+
+    /**
+     * 给定一个二进制数组， 计算其中最大连续1的个数。
+     *
+     * 示例 1:
+     *
+     * 输入: [1,1,0,1,1,1]
+     * 输出: 3
+     * 解释: 开头的两位和最后的三位都是连续1，所以最大连续1的个数是 3.
+     * 注意：
+     *
+     * 输入的数组只包含 0 和1。
+     * 输入数组的长度是正整数，且不超过 10,000。
+     * @param nums
+     * @return
+     */
+    public int findMaxConsecutiveOnes(int[] nums) {
+        /**
+         * state:
+         * 0 : init/wait
+         * 1 : counting
+         */
+        int state = 0;
+
+        int max = 0;
+        int counter = 0;
+        boolean reset = false;
+        for (int i = 0; i < nums.length; i++) {
+            if (state == 0) {
+                if (nums[i] == 1) {
+                    counter++;
+                    state = 1;
+                }
+            } else {
+                if (nums[i] == 1) {
+                    counter++;
+                    state = 1;
+                } else {
+                    // reset
+                    reset = true;
+                    if (counter > max)
+                        max = counter;
+                    counter = 0;
+                    state = 0;
+                }
+            }
+        }
+        if (!reset || counter > max)
+            max = counter;
+        return max;
+    }
+
     public int[] plusOne(int[] digits) {
         boolean overflow = false;
         for (int i = digits.length - 1; i >= 0; i--) {
@@ -674,7 +1070,7 @@ class Solution {
                     begin = i - 1;
                 }
             } else {
-                if (chars[i] != lastC ) {
+                if (chars[i] != lastC) {
                     if ((i - begin) >= 3) {
                         List<Integer> temp = new ArrayList<>();
                         temp.add(begin);
@@ -683,6 +1079,11 @@ class Solution {
                     }
                     begin = 0;
                     state = 0;
+                } else if (i + 1 >= chars.length) {
+                    List<Integer> temp = new ArrayList<>();
+                    temp.add(begin);
+                    temp.add(i);
+                    list.add(temp);
                 }
             }
             lastC = chars[i];
