@@ -2,13 +2,14 @@ package leetcode;
 
 public class Solution_0622 {
     private final int[] array;
-    private int head;
+    private int head = -1;
+    private int tail = -1;
+    private int size = 0;
     private final int capacity;
-    private int tail;
 
     /** Initialize your data structure here. Set the size of the queue to be k. */
     public Solution_0622(int k) {
-        this.capacity = k + 1;
+        this.capacity = k;
         this.array = new int[capacity];
     }
 
@@ -16,12 +17,16 @@ public class Solution_0622 {
     public boolean enQueue(int value) {
         if (isFull())
             return false;
-        if (!isEmpty()) {
-            tail++;
-            if (tail > capacity - 1)
-                tail = 0;
-        }
+
+        tail++;
+        if (tail > capacity - 1)
+            tail = 0;
         array[tail] = value;
+
+        if (isEmpty()) {
+            head++;
+        }
+        size++;
         return true;
     }
 
@@ -32,6 +37,12 @@ public class Solution_0622 {
         head++;
         if (head > capacity -1)
             head = 0;
+
+        if (size == 1) {
+            head = -1;
+            tail = -1;
+        }
+        size--;
         return true;
     }
 
@@ -51,12 +62,12 @@ public class Solution_0622 {
 
     /** Checks whether the circular queue is empty or not. */
     public boolean isEmpty() {
-        return head == tail;
+        return size == 0;
     }
 
     /** Checks whether the circular queue is full or not. */
     public boolean isFull() {
-        return tail == head - 1 || (head == 0 && tail == capacity - 1);
+        return size >= capacity;
     }
 
     /**
@@ -77,7 +88,6 @@ public class Solution_0622 {
         System.out.println(queue.deQueue());
         System.out.println(queue.enQueue(4));
         System.out.println(queue.Rear());
-
     }
 }
 
