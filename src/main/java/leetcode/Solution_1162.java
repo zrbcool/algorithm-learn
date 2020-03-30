@@ -2,7 +2,7 @@ package leetcode;
 
 import java.util.*;
 
-public class Solution {
+public class Solution_1162 {
 
     static class Solution_01 {
 
