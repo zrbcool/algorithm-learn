@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Stack;
+
 public class Solution {
     /**
      * 字符串解码
@@ -21,36 +23,60 @@ public class Solution {
      * "3[a2[c]]"
      */
     public String decodeString(String s) {
-        if (s == null || s.length() == 0) {
-            return "";
-        }
         char[] chars = s.toCharArray();
-        StringBuilder result = new StringBuilder();
-        StringBuilder num = new StringBuilder();
-        StringBuilder str = new StringBuilder();
-        boolean open = false;
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '[') {
-                open = true;
-            } else if (chars[i] == ']') {
-                open = false;
-                for (int j = 0; j < Integer.parseInt(num.toString()); j++) {
-                    result.append(str.toString());
+        return subDecode(chars, 0, chars.length - 1);
+    }
+
+    private String subDecode(char[] chars, int i, int j) {
+        Stack<Character> num = new Stack<>();
+        StringBuilder subStr = new StringBuilder();
+        StringBuilder pre = new StringBuilder();
+        out: for (int x = i; x <= j; x++) {
+            if (isNumber(chars[x])) {
+                num.push(chars[x]);
+            } else if (chars[x] == '[') {
+                for (int y = j; y > x; y--) {
+                    if (chars[y] == ']') {
+                        subStr.append(subDecode(chars, x + 1, y - 1));
+                        break out;
+                    }
                 }
-                num = new StringBuilder();
-                str = new StringBuilder();
+            } else if (chars[x] == ']') {
+                break;
             } else {
-                if (open) {
-                    str.append(chars[i]);
-                } else {
-                    num.append(chars[i]);
-                }
+                pre.append(chars[x]);
             }
         }
-        return result.toString();
+        StringBuilder result = new StringBuilder();
+        result.append(pre.toString());
+        if (num.empty()) {
+            return result.toString();
+        } else {
+            StringBuilder temp = new StringBuilder();
+            while (!num.empty()) {
+                temp.append(num.pop());
+            }
+            for (int k = 0; k < Integer.parseInt(temp.reverse().toString()); k++) {
+                result.append(subStr.toString());
+            }
+            return result.toString();
+        }
+    }
+
+    private boolean isNumber(char x) {
+        return x >= '0' && x <= '9';
     }
 
     public static void main(String[] args) {
-
+        /**
+         * * 示例:
+         *      *
+         *      * s = "3[a]2[bc]", 返回 "aaabcbc".
+         *      * s = "3[a2[c]]", 返回 "accaccacc".
+         *      * s = "2[abc]3[cd]ef", 返回 "abcabccdcdcdef".
+         */
+        System.out.println(new Solution().decodeString("3[a]2[bc]"));
+        System.out.println(new Solution().decodeString("3[a2[c]]"));
+        System.out.println(new Solution().decodeString("2[abc]3[cd]ef"));
     }
 }
