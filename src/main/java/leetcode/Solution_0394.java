@@ -2,7 +2,7 @@ package leetcode;
 
 import java.util.Stack;
 
-public class Solution {
+public class Solution_0394 {
     /**
      * 字符串解码
      *
@@ -24,23 +24,31 @@ public class Solution {
      */
     public String decodeString(String s) {
         char[] chars = s.toCharArray();
-        return subDecode(chars, 0, chars.length - 1);
+        return subDecode(chars, 0);
     }
 
-    private String subDecode(char[] chars, int i, int j) {
+    private String subDecode(char[] chars, int i) {
         Stack<Character> num = new Stack<>();
         StringBuilder subStr = new StringBuilder();
         StringBuilder pre = new StringBuilder();
-        out: for (int x = i; x <= j; x++) {
+        out: for (int x = i; x < chars.length; x++) {
             if (isNumber(chars[x])) {
                 num.push(chars[x]);
             } else if (chars[x] == '[') {
-                for (int y = j; y > x; y--) {
-                    if (chars[y] == ']') {
-                        subStr.append(subDecode(chars, x + 1, y - 1));
+                for (int k = x; k < chars.length; k++) {
+                    if (isNumber(chars[k])) {
+                        subStr.append(subDecode(chars, k));
                         break out;
+                    } else {
+                        subStr.append(chars[k]);
                     }
                 }
+//                for (int y = j; y > x; y--) {
+//                    if (chars[y] == ']') {
+//                        subStr.append(subDecode(chars, x + 1, y - 1));
+//                        break out;
+//                    }
+//                }
             } else if (chars[x] == ']') {
                 break;
             } else {
@@ -75,8 +83,8 @@ public class Solution {
          *      * s = "3[a2[c]]", 返回 "accaccacc".
          *      * s = "2[abc]3[cd]ef", 返回 "abcabccdcdcdef".
          */
-        System.out.println(new Solution().decodeString("3[a]2[bc]"));
-        System.out.println(new Solution().decodeString("3[a2[c]]"));
-        System.out.println(new Solution().decodeString("2[abc]3[cd]ef"));
+        System.out.println(new Solution_0394().decodeString("3[a]2[bc]"));
+        System.out.println(new Solution_0394().decodeString("3[a2[c]]"));
+        System.out.println(new Solution_0394().decodeString("2[abc]3[cd]ef"));
     }
 }
