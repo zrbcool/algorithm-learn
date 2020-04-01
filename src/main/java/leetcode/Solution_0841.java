@@ -2,7 +2,7 @@ package leetcode;
 
 import java.util.*;
 
-public class Solution {
+public class Solution_0841 {
     /**
      * 钥匙和房间
      * 有 N 个房间，开始时你位于 0 号房间。每个房间有不同的号码：0，1，2，...，N-1，并且房间里可能有一些钥匙能使你进入下一个房间。
@@ -60,7 +60,7 @@ public class Solution {
         }
 
         for (int i : unlock) {
-            if (unlock[i] != 1) {
+            if (i != 1) {
                 return false;
             }
         }
@@ -82,12 +82,15 @@ public class Solution {
         r0.add(3);
         rooms.add(r0);
         List<Integer> r1 = new ArrayList<>();
-        r1.add(2);
+        r1.add(3);r1.add(0);r1.add(1);
         rooms.add(r1);
         List<Integer> r2 = new ArrayList<>();
-        r2.add(1);
+        r2.add(2);
         rooms.add(r2);
+        List<Integer> r3 = new ArrayList<>();
+        r3.add(0);
+        rooms.add(r3);
 
-        System.out.println(new Solution().canVisitAllRooms(rooms));
+        System.out.println(new Solution_0841().canVisitAllRooms(rooms));
     }
 }
