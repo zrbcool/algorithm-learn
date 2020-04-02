@@ -1,5 +1,6 @@
 package leetcode;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,9 +74,9 @@ public class Solution_0498 {
         matrix[0] = new int[]{1, 2, 3};
         matrix[1] = new int[]{4, 5, 6};
         matrix[2] = new int[]{7, 8, 9};
-//        for (int i : new Solution().findDiagonalOrder(matrix)) {
-//            System.out.print(i + ",");
-//        }
+        for (int i : new Solution_0498().findDiagonalOrder(matrix)) {
+            System.out.print(i + ",");
+        }
 
         System.out.println();
         matrix = new int[1][1];
