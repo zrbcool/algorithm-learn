@@ -33,20 +33,30 @@ public class Solution_0707 {
      * ["MyLinkedList","addAtHead","addAtTail","addAtIndex","get","deleteAtIndex","get"]
      * [[],[1],[3],[1,2],[1],[1],[1]]
      */
-    private static class MyLinkedList1 {
+    private static class ListNode {
+        private int val;
+        private ListNode next;
+        private ListNode prev;
 
-        private static class Node {
-            private int val;
-            private Node next;
-
-            public Node(int val, Node next) {
-                this.val = val;
-                this.next = next;
-            }
+        public ListNode(int val) {
+            this.val = val;
         }
 
-        private Node head;
-        private Node tail;
+        public ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+
+        public ListNode(int val, ListNode next, ListNode prev) {
+            this.val = val;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+    private static class MyLinkedList1 {
+
+        private ListNode head;
+        private ListNode tail;
 
         /** Initialize your data structure here. */
         public MyLinkedList1() {
@@ -55,12 +65,12 @@ public class Solution_0707 {
 
         /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
         public int get(int index) {
-            Node node = getNode(index);
+            ListNode node = getNode(index);
             return node == null ? -1 : node.val;
         }
 
-        private Node getNode(int index) {
-            Node find;
+        private ListNode getNode(int index) {
+            ListNode find;
             if (head == null)
                 return null;
             find = head;
@@ -75,10 +85,10 @@ public class Solution_0707 {
         /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
         public void addAtHead(int val) {
             if (head == null) {
-                head = new Node(val, null);
+                head = new ListNode(val, null);
                 tail = head;
             } else {
-                head = new Node(val,
+                head = new ListNode(val,
                         head);
             }
         }
@@ -86,10 +96,10 @@ public class Solution_0707 {
         /** Append a node of value val to the last element of the linked list. */
         public void addAtTail(int val) {
             if (head == null) {
-                head = new Node(val, null);
+                head = new ListNode(val, null);
                 tail = head;
             } else {
-                Node newTail = new Node(val, null);
+                ListNode newTail = new ListNode(val, null);
                 tail.next = newTail;
                 tail = newTail;
             }
@@ -101,10 +111,10 @@ public class Solution_0707 {
                 addAtHead(val);
                 return;
             }
-            Node pre = getNode(index - 1);
+            ListNode pre = getNode(index - 1);
             if (pre == null)
                 return;
-            Node add = new Node(val,
+            ListNode add = new ListNode(val,
                     pre.next);
             if (pre == tail) {
                 tail = add;
@@ -119,18 +129,110 @@ public class Solution_0707 {
                 head = head.next;
                 return;
             }
-            Node pre = getNode(index - 1);
+            ListNode pre = getNode(index - 1);
             if (pre == null || pre == tail)
                 return;
             tail = pre.next == tail ? pre : tail;
-            Node target = pre.next;
+            ListNode target = pre.next;
             pre.next = target.next;
             target.next = null;
         }
     }
 
+    /**
+     * 双链表改进
+     */
     private static class MyLinkedList2 {
+        private final ListNode head;
+        private final ListNode tail;
+        private int size;
 
+        public MyLinkedList2() {
+            this.head = new ListNode(-1, null);
+            this.tail = new ListNode(-1, null);
+            head.next = tail;
+            tail.prev = head;
+            size = 0;
+        }
+        /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+        public int get(int index) {
+            if (index < 0 || index >= size) return - 1;
+
+            ListNode cur = head;
+            if (index + 1  > size - index) {
+                for (int i = 0; i < index + 1; i++) {
+                    cur = cur.next;
+                }
+            }
+            else {
+                cur = tail;
+                for (int i = 0; i < size - index; i++) {
+                    cur = cur.prev;
+                }
+            }
+            return cur.val;
+        }
+
+        /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+        public void addAtHead(int val) {
+            addAtIndex(0, val);
+        }
+
+        /** Append a node of value val to the last element of the linked list. */
+        public void addAtTail(int val) {
+            addAtIndex(size, val);
+        }
+
+        /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+        public void addAtIndex(int index, int val) {
+            if (index > size) return;
+            if (index < 0) index = 0;
+            ListNode pred, succ;
+            if (index < size - index) {
+                pred = head;
+                for (int i = 0; i < index; ++i) {
+                    pred = pred.next;
+                }
+                succ = pred.next;
+            } else {
+                succ = tail;
+                for (int i = 0; i < size - index; ++i) {
+                    succ = succ.prev;
+                }
+                pred = succ.prev;
+            }
+
+            size++;
+            ListNode insert = new ListNode(val);
+            insert.prev = pred;
+            insert.next = succ;
+            pred.next = insert;
+            succ.prev = insert;
+        }
+
+        /** Delete the index-th node in the linked list, if the index is valid. */
+        public void deleteAtIndex(int index) {
+            if (index < 0 || index >= size) return;
+
+            ListNode pred, succ;
+            if (index < size - index) {
+                pred = head;
+                for (int i = 0; i < index; ++i) {
+                    pred = pred.next;
+                }
+                succ = pred.next.next;
+            }
+            else {
+                succ = tail;
+                for (int i = 0; i < size - index - 1; ++i) {
+                    succ = succ.prev;
+                }
+                pred = succ.prev.prev;
+            }
+            --size;
+            pred.next = succ;
+            succ.prev = pred;
+        }
     }
 
     public static void main(String[] args) {
@@ -143,7 +245,7 @@ public class Solution_0707 {
          * 预期：
          * [null,null,null,null,null,null,null,null,4,null,null,null]
          */
-        MyLinkedList1 list = new MyLinkedList1();
+        MyLinkedList2 list = new MyLinkedList2();
         list.addAtHead(7);
         list.addAtHead(2);
         list.addAtHead(1);
@@ -165,7 +267,7 @@ public class Solution_0707 {
          * 预期：
          * [null,null,null,null,2,null,2]
          */
-        list = new MyLinkedList1();
+        list = new MyLinkedList2();
         list.addAtHead(1);
         list.addAtTail(3);
         list.addAtIndex(1, 2);
