@@ -33,7 +33,7 @@ public class Solution_0707 {
      * ["MyLinkedList","addAtHead","addAtTail","addAtIndex","get","deleteAtIndex","get"]
      * [[],[1],[3],[1,2],[1],[1],[1]]
      */
-    private static class MyLinkedList {
+    private static class MyLinkedList1 {
 
         private static class Node {
             private int val;
@@ -49,7 +49,7 @@ public class Solution_0707 {
         private Node tail;
 
         /** Initialize your data structure here. */
-        public MyLinkedList() {
+        public MyLinkedList1() {
 
         }
 
@@ -129,6 +129,10 @@ public class Solution_0707 {
         }
     }
 
+    private static class MyLinkedList2 {
+
+    }
+
     public static void main(String[] args) {
         /**
          * 输入：
@@ -139,7 +143,7 @@ public class Solution_0707 {
          * 预期：
          * [null,null,null,null,null,null,null,null,4,null,null,null]
          */
-        MyLinkedList list = new MyLinkedList();
+        MyLinkedList1 list = new MyLinkedList1();
         list.addAtHead(7);
         list.addAtHead(2);
         list.addAtHead(1);
@@ -161,7 +165,7 @@ public class Solution_0707 {
          * 预期：
          * [null,null,null,null,2,null,2]
          */
-        list = new MyLinkedList();
+        list = new MyLinkedList1();
         list.addAtHead(1);
         list.addAtTail(3);
         list.addAtIndex(1, 2);
