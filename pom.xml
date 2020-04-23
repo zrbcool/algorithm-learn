@@ -14,6 +14,10 @@
     <artifactId>algorithm-learn</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <modules>
+        <module>2020Q1-LeetCode-CardLearn</module>
+        <module>2020Q2-Sprint01</module>
+    </modules>
 
     <dependencies>
         <dependency>
