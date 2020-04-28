@@ -1,4 +1,4 @@
-package com.leetcode.y2020q2;
+package com.leetcode.y2020q2.d0426;
 
 public class Solution_0622 {
     /**
