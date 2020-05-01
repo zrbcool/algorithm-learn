@@ -1,4 +1,4 @@
-package com.leetcode.y2020q2.d0427;
+package y2020q2.队列和栈.d0427;
 
 import java.util.ArrayList;
 import java.util.HashMap;

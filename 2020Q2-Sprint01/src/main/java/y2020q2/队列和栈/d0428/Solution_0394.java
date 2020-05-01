@@ -1,4 +1,4 @@
-package com.leetcode.y2020q2.d0428;
+package y2020q2.队列和栈.d0428;
 
 import java.util.Stack;
 

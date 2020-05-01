@@ -1,4 +1,4 @@
-package com.leetcode.y2020q2.d0426;
+package y2020q2.队列和栈.d0426;
 
 import java.util.LinkedList;
 import java.util.Queue;
